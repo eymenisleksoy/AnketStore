@@ -32,6 +32,66 @@
                     </form>
                 </div>
             </div>
+
+            <!-- Comment and Rating Section -->
+            <div class="card mt-5 shadow-sm border-0" style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;">
+                <div class="card-body p-4">
+                    <h3 class="text-white mb-4 fw-bold">Yorumlar ve Puanlar</h3>
+
+                    <!-- Comment Form -->
+                    <form action="{% url 'polls:add_comment' question.id %}" method="post" class="mb-5">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="author_name" class="form-label text-muted small fw-bold text-uppercase">İsminiz</label>
+                                <input type="text" name="author_name" class="form-control bg-dark border-secondary text-white rounded-pill px-3" placeholder="Anonim">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="rating" class="form-label text-muted small fw-bold text-uppercase">Puanınız</label>
+                                <select name="rating" class="form-select bg-dark border-secondary text-white rounded-pill px-3">
+                                    <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+                                    <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                                    <option value="3">⭐⭐⭐ (3/5)</option>
+                                    <option value="2">⭐⭐ (2/5)</option>
+                                    <option value="1">⭐ (1/5)</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="comment_text" class="form-label text-muted small fw-bold text-uppercase">Yorumunuz</label>
+                                <textarea name="comment_text" rows="3" class="form-control bg-dark border-secondary text-white rounded-4 px-3" placeholder="Anket hakkındaki düşüncelerini paylaş..." required></textarea>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">Yorumu Gönder</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr class="border-secondary opacity-25 mb-4">
+
+                    <!-- Comments List -->
+                    <div class="comment-list">
+                        {% for comment in comments %}
+                            <div class="mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="text-white fw-bold mb-0">{{ comment.author_name }}</h6>
+                                    <span class="text-warning small">
+                                        {% for i in "12345"|make_list %}
+                                            {% if forloop.counter <= comment.rating %}★{% else %}☆{% endif %}
+                                        {% endfor %}
+                                    </span>
+                                </div>
+                                <p class="text-light opacity-75 mb-1">{{ comment.comment_text }}</p>
+                                <small class="text-muted" style="font-size: 0.75rem;">{{ comment.created_at|date:"d M Y, H:i" }}</small>
+                            </div>
+                        {% empty %}
+                            <div class="text-center py-4 text-muted italic">
+                                <i class="bi bi-chat-left-dots fs-3 d-block mb-2"></i>
+                                Henüz yorum yapılmamış. İlk yorumu sen yap!
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

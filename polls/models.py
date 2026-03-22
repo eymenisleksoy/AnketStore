@@ -18,3 +18,13 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+class Comment(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='comments')
+    author_name = models.CharField(max_length=100, default="Anonim")
+    comment_text = models.TextField()
+    rating = models.IntegerField(default=5)  # 1-5 arası puan
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.author_name} - {self.question.question_text}"

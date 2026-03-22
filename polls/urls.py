@@ -17,4 +17,7 @@ urlpatterns = [
     
     # Oy verme işlemi: /polls/5/vote/
     path('<int:question_id>/vote/', views.vote, name='vote'),
+
+    # Yorum ekleme: /polls/5/comment/
+    path('<int:question_id>/comment/', views.add_comment, name='add_comment'),
 ]

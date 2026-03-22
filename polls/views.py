@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Question, Choice
+from .models import Question, Choice, Comment
 
 # 1. Ana Sayfa (Landing Page)
 def index(request):
@@ -23,9 +23,31 @@ def detail(request, question_id):
     question.views += 1
     question.save()
     
-    return render(request, 'polls/detail.html', {'question': question})
+    comments = question.comments.all().order_by('-created_at')
+    
+    return render(request, 'polls/detail.html', {
+        'question': question,
+        'comments': comments
+    })
 
-# 3. Sonuçlar (Oylama sonrası sonuçları gösterir)
+# 4. Yorum Ekleme
+def add_comment(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    if request.method == 'POST':
+        name = request.POST.get('author_name', 'Anonim')
+        text = request.POST.get('comment_text')
+        rating = request.POST.get('rating', 5)
+        
+        if text:
+            Comment.objects.create(
+                question=question,
+                author_name=name,
+                comment_text=text,
+                rating=int(rating)
+            )
+    return HttpResponseRedirect(reverse('polls:detail', args=(question.id,)))
+
+# 5. Sonuçlar (Oylama sonrası sonuçları gösterir)
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': question})
