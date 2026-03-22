@@ -59,43 +59,46 @@
     <!-- Özellikler / Bilgi Bölümü -->
     <div id="features" class="row py-5 mt-5 g-4 animate-fade-in" style="animation-delay: 0.2s;">
         <div class="col-12 text-center mb-5">
-            <h2 class="display-5 fw-bold text-white mb-3">AnketStore Nasıl Çalışır?</h2>
-            <div class="mx-auto bg-primary rounded-pill mb-4" style="width: 80px; height: 4px;"></div>
-            <p class="text-muted fs-5 mx-auto" style="max-width: 700px;">Topluluğun nabzını tutmak hiç bu kadar kolay olmamıştı.</p>
+            <h2 class="display-4 fw-bold text-white mb-3">AnketStore Nasıl Çalışır?</h2>
+            <div class="mx-auto bg-primary rounded-pill mb-4" style="width: 80px; height: 5px;"></div>
+            <p class="text-light opacity-75 fs-4 mx-auto" style="max-width: 800px;">Topluluğun nabzını tutmak, fikirlerinizi özgürce ifade etmek için doğru yerdesiniz.</p>
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 p-4 text-center transform-hover">
-                <div class="card-body">
-                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 70px; height: 70px;">
-                        <i class="bi bi-pencil-square fs-2"></i>
+            <div class="card h-100 p-4 text-center transform-hover shadow-lg" style="background: rgba(30, 41, 59, 0.4) !important; border: 1px solid rgba(255,255,255,0.05);">
+                <div class="card-body d-flex flex-column">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4 shadow" style="width: 80px; height: 80px;">
+                        <i class="bi bi-pencil-square fs-1"></i>
                     </div>
-                    <h3 class="h4 text-white mb-3">Oy Kullanın</h3>
-                    <p class="text-muted mb-0">İlginizi çeken herhangi bir anket bulun ve tek tıkla oyunuzu kullanın. Fikirleriniz bizim için önemli.</p>
+                    <h3 class="h4 text-white mb-3 fw-bold">Oy Kullanın</h3>
+                    <p class="text-light opacity-75 mb-4 fs-6 lh-base">İlginizi çeken herhangi bir anket bulun ve tek tıkla oyunuzu kullanın. Fikirleriniz bizim için önemli.</p>
+                    <a href="{% url 'polls:list' %}" class="btn btn-primary mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Hemen Oy Ver</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 p-4 text-center transform-hover">
-                <div class="card-body">
-                    <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 70px; height: 70px;">
-                        <i class="bi bi-graph-up fs-2"></i>
+            <div class="card h-100 p-4 text-center transform-hover shadow-lg" style="background: rgba(30, 41, 59, 0.4) !important; border: 1px solid rgba(255,255,255,0.05);">
+                <div class="card-body d-flex flex-column">
+                    <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4 shadow" style="width: 80px; height: 80px;">
+                        <i class="bi bi-graph-up fs-1"></i>
                     </div>
-                    <h3 class="h4 text-white mb-3">Sonuçları Takip Edin</h3>
-                    <p class="text-muted mb-0">Oylama biter bitmez sonuçları anlık grafiklerle görün. Diğer kullanıcıların ne düşündüğünü keşfedin.</p>
+                    <h3 class="h4 text-white mb-3 fw-bold">Sonuçları Gör</h3>
+                    <p class="text-light opacity-75 mb-4 fs-6 lh-base">Oylama biter bitmez sonuçları anlık grafiklerle izleyin. Toplumun genel eğilimlerini anında keşfedin.</p>
+                    <a href="{% url 'polls:list' %}" class="btn btn-outline-info mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Grafikleri İncele</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 p-4 text-center transform-hover">
-                <div class="card-body">
-                    <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 70px; height: 70px;">
-                        <i class="bi bi-chat-left-text fs-2"></i>
+            <div class="card h-100 p-4 text-center transform-hover shadow-lg" style="background: rgba(30, 41, 59, 0.4) !important; border: 1px solid rgba(255,255,255,0.05);">
+                <div class="card-body d-flex flex-column">
+                    <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4 shadow" style="width: 80px; height: 80px;">
+                        <i class="bi bi-chat-left-text fs-1"></i>
                     </div>
-                    <h3 class="h4 text-white mb-3">Yorum Yapın</h3>
-                    <p class="text-muted mb-0">Anketler hakkında düşüncelerinizi paylaşın ve diğer üyelerle fikir alışverişinde bulunun.</p>
+                    <h3 class="h4 text-white mb-3 fw-bold">Etkileşim</h3>
+                    <p class="text-light opacity-75 mb-4 fs-6 lh-base">Anketler hakkında yorumlar yaparak düşüncelerinizi paylaşın ve diğer üyelerle fikir alışverişinde bulunun.</p>
+                    <a href="{% url 'polls:list' %}" class="btn btn-outline-success mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Yorumlara Göz At</a>
                 </div>
             </div>
         </div>
