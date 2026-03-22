@@ -1,0 +1,38 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Hoş Geldiniz - AnketStore{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="col-lg-8 text-center bg-dark p-5 rounded-4 shadow-lg" style="background: rgba(30, 41, 59, 0.4) !important; border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(10px);">
+            <div class="mb-4">
+                <span class="badge bg-primary rounded-pill px-3 py-2 mb-3">Sizlerin Fikirleri Değerli</span>
+                <h1 class="display-3 fw-bold text-white mb-3" style="letter-spacing: -1px;">AnketStore'a <br><span class="text-primary font-serif">Hoş Geldiniz</span></h1>
+                <p class="lead text-muted mx-auto mb-5" style="max-width: 600px;">
+                    En güncel konularda oy kullanın, fikirlerinizi paylaşın ve topluluğun ne düşündüğünü keşfedin. 
+                </p>
+            </div>
+            
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'polls:list' %}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg transition" style="transform: scale(1.1);">
+                    <i class="bi bi-bar-chart-fill me-2"></i> Anketlere Göz At
+                </a>
+            </div>
+
+            <div class="row mt-5 pt-5 border-top border-secondary opacity-50">
+                <div class="col-4">
+                    <h3 class="h2 fw-bold text-white">20+</h3>
+                    <p class="text-sm text-info">Aktif Anket</p>
+                </div>
+                <div class="col-4 border-start border-end border-secondary">
+                    <h3 class="h2 fw-bold text-white">100%</h3>
+                    <p class="text-sm text-info">Gerçek Oylar</p>
+                </div>
+                <div class="col-4">
+                    <h3 class="h2 fw-bold text-white">24/7</h3>
+                    <p class="text-sm text-info">Anlık Sonuçlar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

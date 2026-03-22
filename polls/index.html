@@ -1,0 +1,23 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Ana Sayfa - AnketStore{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="mb-4 text-primary fw-bold">Güncel Anketler</h1>
+            {% if latest_question_list %}
+                <div class="list-group shadow-sm border-0">
+                {% for question in latest_question_list %}
+                    <a href="{% url 'polls:detail' question.id %}" class="list-group-item list-group-item-action py-3 mb-2 rounded border-0 shadow-sm d-flex justify-content-between align-items-center">
+                        <span class="fs-5">{{ question.question_text }}</span>
+                        <span class="btn btn-sm btn-primary px-3 rounded-pill text-white">Oy Ver</span>
+                    </a>
+                {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning shadow-sm border-0">Henüz hiç anket sorusu eklenmemiş.</div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

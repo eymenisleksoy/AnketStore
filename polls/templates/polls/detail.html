@@ -1,0 +1,37 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Oy Ver - {{ question.question_text }} - AnketStore{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="card-title text-primary mb-4 fw-bold divider">{{ question.question_text }}</h2>
+                    
+                    {% if error_message %}
+                        <div class="alert alert-danger shadow-sm border-0">{{ error_message }}</div>
+                    {% endif %}
+                    
+                    <form action="{% url 'polls:vote' question.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                        {% for choice in question.choice_set.all %}
+                            <div class="form-check custom-radio mb-3 p-3 rounded transition" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                                <input class="form-check-input ms-0" type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                                <label class="form-check-label ms-2 text-light" for="choice{{ forloop.counter }}">
+                                    {{ choice.choice_text }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+                            <button type="submit" class="btn btn-success px-5 py-2 rounded-pill shadow-sm">Oy Ver</button>
+                            <a href="{% url 'polls:index' %}" class="btn btn-outline-secondary px-4 py-2 rounded-pill">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

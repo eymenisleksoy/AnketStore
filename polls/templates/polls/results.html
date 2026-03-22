@@ -1,0 +1,31 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Sonuçlar - {{ question.question_text }} - AnketStore{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h2 class="card-title text-primary mb-4 fw-bold">{{ question.question_text }} - Sonuçlar</h2>
+                    
+                    <div class="list-group mb-4 shadow-sm border-0">
+                    {% for choice in question.choice_set.all %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center py-3 border-0 border-bottom">
+                            <span class="fs-5">{{ choice.choice_text }}</span>
+                            <div class="text-end">
+                                <span class="badge bg-primary rounded-pill fs-6 px-3">{{ choice.votes }} Oy</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                        <a href="{% url 'polls:detail' question.id %}" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">Tekrar Oy Ver</a>
+                        <a href="{% url 'polls:index' %}" class="btn btn-outline-secondary px-4 py-2 rounded-pill">Anket Listesine Dön</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
