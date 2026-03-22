@@ -10,11 +10,13 @@ def index(request):
     total_polls = Question.objects.count()
     total_votes = Choice.objects.aggregate(Sum('votes'))['votes__sum'] or 0
     total_views = Question.objects.aggregate(Sum('views'))['views__sum'] or 0
+    latest_poll = Question.objects.order_by('-pub_date').first()
     
     context = {
         'total_polls': total_polls,
         'total_votes': total_votes,
         'total_views': total_views,
+        'latest_poll': latest_poll,
     }
     return render(request, 'polls/index.html', context)
 

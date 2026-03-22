@@ -72,7 +72,7 @@
                     </div>
                     <h3 class="h4 text-white mb-3 fw-bold">Oy Kullanın</h3>
                     <p class="text-light opacity-75 mb-4 fs-6 lh-base">İlginizi çeken herhangi bir anket bulun ve tek tıkla oyunuzu kullanın. Fikirleriniz bizim için önemli.</p>
-                    <a href="{% url 'polls:list' %}" class="btn btn-primary mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Hemen Oy Ver</a>
+                    <a href="{% url 'polls:list' %}" class="btn btn-primary mt-auto rounded-pill px-4 py-2 fw-bold transform-hover shadow">Anket Listesine Git</a>
                 </div>
             </div>
         </div>
@@ -85,7 +85,11 @@
                     </div>
                     <h3 class="h4 text-white mb-3 fw-bold">Sonuçları Gör</h3>
                     <p class="text-light opacity-75 mb-4 fs-6 lh-base">Oylama biter bitmez sonuçları anlık grafiklerle izleyin. Toplumun genel eğilimlerini anında keşfedin.</p>
-                    <a href="{% url 'polls:list' %}" class="btn btn-outline-info mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Grafikleri İncele</a>
+                    {% if latest_poll %}
+                    <a href="{% url 'polls:results' latest_poll.id %}" class="btn btn-outline-info mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Son Anket Sonuçları</a>
+                    {% else %}
+                    <a href="{% url 'polls:list' %}" class="btn btn-outline-info mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Sonuçlara Göz At</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -96,9 +100,13 @@
                     <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4 shadow" style="width: 80px; height: 80px;">
                         <i class="bi bi-chat-left-text fs-1"></i>
                     </div>
-                    <h3 class="h4 text-white mb-3 fw-bold">Etkileşim</h3>
+                    <h3 class="h4 text-white mb-3 fw-bold">Yorumlar</h3>
                     <p class="text-light opacity-75 mb-4 fs-6 lh-base">Anketler hakkında yorumlar yaparak düşüncelerinizi paylaşın ve diğer üyelerle fikir alışverişinde bulunun.</p>
-                    <a href="{% url 'polls:list' %}" class="btn btn-outline-success mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Yorumlara Göz At</a>
+                    {% if latest_poll %}
+                    <a href="{% url 'polls:detail' latest_poll.id %}#comments" class="btn btn-outline-success mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Son Yorumları Oku</a>
+                    {% else %}
+                    <a href="{% url 'polls:list' %}" class="btn btn-outline-success mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Tartışmalara Katıl</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
