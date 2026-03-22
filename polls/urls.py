@@ -9,6 +9,9 @@ urlpatterns = [
     # Anket listesi: /polls/list/
     path('list/', views.poll_list, name='list'),
     
+    # Trend anketler: /polls/trending/
+    path('trending/', views.trending_polls, name='trending'),
+    
     # Soru detayı: /polls/5/
     path('<int:question_id>/', views.detail, name='detail'),
     

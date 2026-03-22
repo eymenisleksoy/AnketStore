@@ -3,15 +3,33 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Question, Choice, Comment
 
+from django.db.models import Sum
+
 # 1. Ana Sayfa (Landing Page)
 def index(request):
-    return render(request, 'polls/index.html')
+    total_polls = Question.objects.count()
+    total_votes = Choice.objects.aggregate(Sum('votes'))['votes__sum'] or 0
+    total_views = Question.objects.aggregate(Sum('views'))['views__sum'] or 0
+    
+    context = {
+        'total_polls': total_polls,
+        'total_votes': total_votes,
+        'total_views': total_views,
+    }
+    return render(request, 'polls/index.html', context)
 
 # 2. Anket Listesi (Tüm anketleri listeler)
 def poll_list(request):
     # En son eklenen 20 soruyu tarihe göre sıralayıp alıyoruz
     latest_question_list = Question.objects.order_by('-pub_date')[:20]
-    context = {'latest_question_list': latest_question_list}
+    context = {'latest_question_list': latest_question_list, 'title': 'Tüm Anketler'}
+    return render(request, 'polls/list.html', context)
+
+# 2.1 Trend Anketler (Rasgele anketler)
+def trending_polls(request):
+    # Rasgele 6 anket alıyoruz
+    random_question_list = Question.objects.order_by('?')[:6]
+    context = {'latest_question_list': random_question_list, 'title': 'Trend Anketler'}
     return render(request, 'polls/list.html', context)
 
 # 3. Soru Detayı (Tek bir soruyu ve seçeneklerini gösterir)
