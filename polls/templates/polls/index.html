@@ -3,34 +3,51 @@
 {% block title %}Hoş Geldiniz - AnketStore{% endblock %}
 
 {% block content %}
-    <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
-        <div class="col-lg-8 text-center bg-dark p-5 rounded-4 shadow-lg" style="background: rgba(30, 41, 59, 0.4) !important; border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(10px);">
-            <div class="mb-4">
-                <span class="badge bg-primary rounded-pill px-3 py-2 mb-3">Sizlerin Fikirleri Değerli</span>
-                <h1 class="display-3 fw-bold text-white mb-3" style="letter-spacing: -1px;">AnketStore'a <br><span class="text-primary font-serif">Hoş Geldiniz</span></h1>
-                <p class="lead text-muted mx-auto mb-5" style="max-width: 600px;">
-                    En güncel konularda oy kullanın, fikirlerinizi paylaşın ve topluluğun ne düşündüğünü keşfedin. 
+    <div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="col-lg-10 text-center bg-dark p-5 rounded-5 shadow-2xl position-relative overflow-hidden" style="background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8)) !important; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);">
+            <!-- Dekoratif Arka Plan Işığı -->
+            <div class="position-absolute top-0 start-50 translate-middle-x bg-primary opacity-10 rounded-circle" style="width: 500px; height: 500px; filter: blur(120px); z-index: -1;"></div>
+            
+            <div class="mb-5">
+                <span class="badge bg-primary bg-opacity-25 text-primary rounded-pill px-4 py-2 mb-4 border border-primary border-opacity-25" style="letter-spacing: 1px; font-weight: 600; font-size: 0.85rem;">
+                    <i class="bi bi-star-fill me-2"></i>SİZLERİN FİKİRLERİ DEĞERLİ
+                </span>
+                <h1 class="display-2 fw-black text-white mb-4 animate-fade-in" style="letter-spacing: -2px; line-height: 1.1;">
+                    AnketStore'a <br>
+                    <span class="text-gradient">Hoş Geldiniz</span>
+                </h1>
+                <p class="lead text-light opacity-100 mx-auto mb-5 fs-4" style="max-width: 700px; font-weight: 400; line-height: 1.6;">
+                    En güncel konularda oy kullanın, fikirlerinizi özgürce paylaşın ve <span class="text-white fw-bold">topluluğun nabzını</span> anlık olarak keşfedin.
                 </p>
             </div>
             
-            <div class="d-flex justify-content-center gap-3">
-                <a href="{% url 'polls:list' %}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg transition" style="transform: scale(1.1);">
-                    <i class="bi bi-bar-chart-fill me-2"></i> Anketlere Göz At
+            <div class="d-flex justify-content-center gap-4 mb-5 pb-2">
+                <a href="{% url 'polls:list' %}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg transform-hover transition-all d-flex align-items-center">
+                    <i class="bi bi-bar-chart-fill me-3 fs-5"></i> Anketleri Keşfet
+                </a>
+                <a href="#features" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold border-opacity-25 transform-hover transition-all">
+                    Daha Fazla Bilgi
                 </a>
             </div>
 
-            <div class="row mt-5 pt-5 border-top border-secondary opacity-50">
-                <div class="col-4">
-                    <h3 class="h2 fw-bold text-white">20+</h3>
-                    <p class="text-sm text-info">Aktif Anket</p>
+            <div class="row g-4 mt-4 py-4 border-top border-white border-opacity-10">
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <h3 class="display-6 fw-bold text-white mb-0">20+</h3>
+                        <p class="text-primary text-uppercase small ls-wide mb-0">Aktif Anket</p>
+                    </div>
                 </div>
-                <div class="col-4 border-start border-end border-secondary">
-                    <h3 class="h2 fw-bold text-white">100%</h3>
-                    <p class="text-sm text-info">Gerçek Oylar</p>
+                <div class="col-md-4 border-start border-end border-white border-opacity-10">
+                    <div class="p-3">
+                        <h3 class="display-6 fw-bold text-white mb-0">100%</h3>
+                        <p class="text-primary text-uppercase small ls-wide mb-0">Güvenilir Oylar</p>
+                    </div>
                 </div>
-                <div class="col-4">
-                    <h3 class="h2 fw-bold text-white">24/7</h3>
-                    <p class="text-sm text-info">Anlık Sonuçlar</p>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <h3 class="display-6 fw-bold text-white mb-0">24/7</h3>
+                        <p class="text-primary text-uppercase small ls-wide mb-0">Anlık Analiz</p>
+                    </div>
                 </div>
             </div>
         </div>
