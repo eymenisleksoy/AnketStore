@@ -1,0 +1,79 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Tüm Anket Sonuçları - AnketStore{% endblock %}
+
+{% block content %}
+<div class="row align-items-center mb-5">
+    <div class="col-md-8">
+        <h1 class="display-4 fw-black text-white mb-2">Tüm <span class="text-gradient">Sonuçlar</span></h1>
+        <p class="text-light opacity-75 fs-5">Platformdaki tüm anketlerin güncel puan durumlarını aşağıda görebilirsiniz.</p>
+    </div>
+    <div class="col-md-4 text-md-end">
+        <a href="{% url 'polls:index' %}" class="btn btn-outline-light rounded-pill px-4">Geri Dön</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for question in question_list %}
+    <div class="col-lg-4 col-md-6">
+        <div class="card h-100 rgb-card border-0" style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(20px); border-radius: 20px;">
+            <div class="card-body p-4 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge bg-primary bg-opacity-25 text-primary rounded-pill px-3 py-1 border border-primary border-opacity-25 small">#{{ forloop.counter }}</span>
+                    <span class="text-muted small"><i class="bi bi-person-check me-1"></i> {{ question.total_votes }} Oy</span>
+                </div>
+                
+                <h3 class="h5 text-white fw-bold mb-4 flex-grow-1">{{ question.question_text }}</h3>
+                
+                <div class="results-container gap-3 d-flex flex-column">
+                    {% for choice in question.choice_set.all|dictsortreversed:"votes" %}
+                    <div class="result-item p-3 rounded-4" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-white fw-bold fs-6">{{ choice.choice_text }}</span>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25 small">
+                                    {% if question.total_votes > 0 %}{% widthratio choice.votes question.total_votes 100 %}{% else %}0{% endif %}%
+                                </span>
+                                <span class="text-info fw-black small">{{ choice.votes }} Oy</span>
+                            </div>
+                        </div>
+                        <div class="progress" style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 20px;">
+                            <div class="progress-bar bg-primary shadow-sm" role="progressbar" 
+                                 style="width: {% if question.total_votes > 0 %}{% widthratio choice.votes question.total_votes 100 %}{% else %}0{% endif %}%">
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mt-4 pt-3 border-top border-white border-opacity-10 d-grid">
+                    <a href="{% url 'polls:detail' question.id %}" class="btn btn-sm btn-outline-light rounded-pill opacity-75 transform-hover">Detayları Gör</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <p class="text-muted fs-4">Henüz anket bulunmuyor.</p>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .results-container {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    /* Scrollbar Styling */
+    .results-container::-webkit-scrollbar {
+        width: 4px;
+    }
+    .results-container::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .results-container::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}

@@ -5,23 +5,76 @@
 {% block content %}
     <div class="row justify-content-center align-items-center position-relative" style="min-height: 80vh;">
         <!-- Biliyor muydunuz? Float Card -->
-        <div class="position-absolute d-none d-md-block" style="top: 0; right: 0; width: 260px; z-index: 10;">
-            <div class="card border-primary border-opacity-25 shadow-2xl animate-fade-in" style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(15px); border-radius: 20px; animation-delay: 0.5s;">
-                <div class="card-body p-3">
-                    <div class="d-flex align-items-center mb-2">
-                        <div class="bg-primary rounded-circle p-2 me-2">
-                            <i class="bi bi-lightbulb-fill text-white fs-6"></i>
+        <div class="position-absolute d-none d-md-block" style="top: 0; right: 0; width: 280px; z-index: 10;">
+            <style>
+                .fact-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+                .fact-card:hover { transform: translateY(-5px) scale(1.02); }
+                .fact-dot { width: 8px; height: 4px; background: rgba(255, 255, 255, 0.2); border-radius: 2px; transition: all 0.4s ease; }
+                .fact-dot.active { width: 24px; background: #3b82f6; }
+                .fact-text-container { min-height: 85px; display: flex; align-items: center; }
+                #fact-text { transition: all 0.5s ease-in-out; }
+                .fact-hidden { opacity: 0; transform: translateX(20px); }
+                .fact-visible { opacity: 1; transform: translateX(0); }
+            </style>
+            <div class="card border-0 shadow-2xl fact-card overflow-hidden rgb-card" style="background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(20px); border-radius: 20px;">
+                <div class="position-absolute top-0 start-0 w-100 bg-primary" style="height: 3px; opacity: 0.6;"></div>
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-20 rounded-circle p-2 me-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                            <i class="bi bi-lightbulb-fill text-primary fs-5"></i>
                         </div>
-                        <span class="text-primary fw-bold small ls-wide">BİLİYOR MUYDUNUZ?</span>
+                        <span class="text-primary fw-bold small ls-wide" style="font-size: 0.75rem;">BİLİYOR MUYDUNUZ?</span>
                     </div>
-                    <p class="text-light small mb-0 lh-base" style="font-style: italic;">
-                        "Geçen hafta açılan anketlere göre kullanıcılarımızın <span class="text-primary fw-bold">%75'i</span> güne kahve içmeden başlayamıyor!"
-                    </p>
+                    <div class="fact-text-container">
+                        <p id="fact-text" class="text-light small mb-0 lh-base fact-visible" style="font-style: italic;">
+                            "Haftalık anketlerimize katılanların <span class="text-primary fw-bold">%75'i</span> güne bir fincan taze kahve ile başladığını söylüyor!"
+                        </p>
+                    </div>
+                    <div class="mt-3 d-flex gap-1 justify-content-start">
+                        <div class="fact-dot active" data-index="0"></div>
+                        <div class="fact-dot" data-index="1"></div>
+                        <div class="fact-dot" data-index="2"></div>
+                        <div class="fact-dot" data-index="3"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-10 text-center bg-dark p-5 rounded-5 shadow-2xl position-relative overflow-hidden" style="background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8)) !important; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);">
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const facts = [
+                    `"Haftalık anketlerimize katılanların <span class="text-primary fw-bold">%75'i</span> güne bir fincan taze kahve ile başladığını söylüyor!"`,
+                    `"AnketStore platformunda şu ana kadar <span class="text-primary fw-bold">{{ total_votes|default:'10.000' }}</span>'den fazla oy kullanıldı ve her geçen gün büyüyoruz!"`,
+                    `"Kullanıcılarımızın <span class="text-primary fw-bold">%60'ı</span> hafta sonlarını evde dinlenerek geçirmeyi, macera dolu gezilere tercih ediyor."`,
+                    `"En çok ilgi gören <span class="text-primary fw-bold">'Yaz mı Kış mı?'</span> anketi, platform tarihimizin en çok oy alan konusu oldu!"`
+                ];
+
+                let currentFactIndex = 0;
+                const factText = document.getElementById('fact-text');
+                const dots = document.querySelectorAll('.fact-dot');
+
+                function updateFact() {
+                    factText.classList.remove('fact-visible');
+                    factText.classList.add('fact-hidden');
+                    
+                    setTimeout(() => {
+                        currentFactIndex = (currentFactIndex + 1) % facts.length;
+                        factText.innerHTML = facts[currentFactIndex];
+                        
+                        dots.forEach((dot, index) => {
+                            dot.classList.toggle('active', index === currentFactIndex);
+                        });
+                        
+                        factText.classList.remove('fact-hidden');
+                        factText.classList.add('fact-visible');
+                    }, 500);
+                }
+
+                setInterval(updateFact, 6000);
+            });
+        </script>
+
+        <div class="col-lg-10 text-center bg-dark p-5 rounded-5 shadow-2xl position-relative overflow-hidden rgb-card" style="background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8)) !important; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);">
             <!-- Dekoratif Arka Plan Işığı -->
             <div class="position-absolute top-0 start-50 translate-middle-x bg-primary opacity-10 rounded-circle" style="width: 500px; height: 500px; filter: blur(120px); z-index: -1;"></div>
             
@@ -41,9 +94,6 @@
             <div class="d-flex flex-wrap justify-content-center gap-4 mb-5 pb-2">
                 <a href="{% url 'polls:list' %}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg transform-hover transition-all d-flex align-items-center">
                     <i class="bi bi-bar-chart-fill me-3 fs-5"></i> Anketleri Keşfet
-                </a>
-                <a href="{% url 'polls:trending' %}" class="btn btn-outline-info btn-lg px-5 py-3 rounded-pill fw-bold border-opacity-50 transform-hover transition-all d-flex align-items-center">
-                    <i class="bi bi-fire me-3 fs-5"></i> Trend Anketler
                 </a>
                 <a href="#features" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold border-opacity-25 transform-hover transition-all">
                     Daha Fazla Bilgi
@@ -82,37 +132,33 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 p-4 text-center transform-hover shadow-lg" style="background: rgba(30, 41, 59, 0.4) !important; border: 1px solid rgba(255,255,255,0.05);">
+            <div class="card h-100 p-4 text-center transform-hover shadow-lg rgb-card" style="background: rgba(30, 41, 59, 0.4) !important; border-radius: 24px;">
                 <div class="card-body d-flex flex-column">
                     <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4 shadow" style="width: 80px; height: 80px;">
                         <i class="bi bi-pencil-square fs-1"></i>
                     </div>
                     <h3 class="h4 text-white mb-3 fw-bold">Oy Kullanın</h3>
                     <p class="text-light opacity-75 mb-4 fs-6 lh-base">İlginizi çeken herhangi bir anket bulun ve tek tıkla oyunuzu kullanın. Fikirleriniz bizim için önemli.</p>
-                    <a href="{% url 'polls:list' %}" class="btn btn-primary mt-auto rounded-pill px-4 py-2 fw-bold transform-hover shadow">Anket Listesine Git</a>
+                    <a href="{% url 'polls:list' %}" class="btn btn-primary mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Anket Listesine Git</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 p-4 text-center transform-hover shadow-lg" style="background: rgba(30, 41, 59, 0.4) !important; border: 1px solid rgba(255,255,255,0.05);">
+            <div class="card h-100 p-4 text-center transform-hover shadow-lg rgb-card" style="background: rgba(30, 41, 59, 0.4) !important; border-radius: 24px;">
                 <div class="card-body d-flex flex-column">
                     <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4 shadow" style="width: 80px; height: 80px;">
                         <i class="bi bi-graph-up fs-1"></i>
                     </div>
                     <h3 class="h4 text-white mb-3 fw-bold">Sonuçları Gör</h3>
                     <p class="text-light opacity-75 mb-4 fs-6 lh-base">Oylama biter bitmez sonuçları anlık grafiklerle izleyin. Toplumun genel eğilimlerini anında keşfedin.</p>
-                    {% if latest_poll %}
-                    <a href="{% url 'polls:results' latest_poll.id %}" class="btn btn-outline-info mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Son Anket Sonuçları</a>
-                    {% else %}
-                    <a href="{% url 'polls:list' %}" class="btn btn-outline-info mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Sonuçlara Göz At</a>
-                    {% endif %}
+                    <a href="{% url 'polls:all_results' %}" class="btn btn-outline-info mt-auto rounded-pill px-4 py-2 fw-bold transform-hover shadow">Tüm Sonuçları Gör</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 p-4 text-center transform-hover shadow-lg" style="background: rgba(30, 41, 59, 0.4) !important; border: 1px solid rgba(255,255,255,0.05);">
+            <div class="card h-100 p-4 text-center transform-hover shadow-lg rgb-card" style="background: rgba(30, 41, 59, 0.4) !important; border-radius: 24px;">
                 <div class="card-body d-flex flex-column">
                     <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4 shadow" style="width: 80px; height: 80px;">
                         <i class="bi bi-chat-left-text fs-1"></i>
@@ -120,9 +166,9 @@
                     <h3 class="h4 text-white mb-3 fw-bold">Yorumlar</h3>
                     <p class="text-light opacity-75 mb-4 fs-6 lh-base">Anketler hakkında yorumlar yaparak düşüncelerinizi paylaşın ve diğer üyelerle fikir alışverişinde bulunun.</p>
                     {% if latest_poll %}
-                    <a href="{% url 'polls:detail' latest_poll.id %}#comments" class="btn btn-outline-success mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Son Yorumları Oku</a>
+                    <a href="{% url 'polls:detail' latest_poll.id %}#comments" class="btn btn-outline-success mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Yorum Paylaş</a>
                     {% else %}
-                    <a href="{% url 'polls:list' %}" class="btn btn-outline-success mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Tartışmalara Katıl</a>
+                    <a href="{% url 'polls:list' %}" class="btn btn-outline-success mt-auto rounded-pill px-4 py-2 fw-bold transform-hover">Yorumlara Git</a>
                     {% endif %}
                 </div>
             </div>

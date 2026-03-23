@@ -34,6 +34,13 @@ def trending_polls(request):
     context = {'latest_question_list': random_question_list, 'title': 'Trend Anketler'}
     return render(request, 'polls/list.html', context)
 
+# 2.2 Fotoğraflı Anketler
+def photo_polls(request):
+    # Sadece görseli olan anketleri alıyoruz
+    photo_question_list = Question.objects.exclude(image_url__isnull=True).exclude(image_url='').order_by('-pub_date')
+    context = {'latest_question_list': photo_question_list, 'title': 'Fotoğraflı Anketler'}
+    return render(request, 'polls/list.html', context)
+
 # 3. Soru Detayı (Tek bir soruyu ve seçeneklerini gösterir)
 def detail(request, question_id):
     # Soru varsa getir, yoksa 404 Hata sayfası göster
@@ -71,6 +78,11 @@ def add_comment(request, question_id):
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': question})
+
+# 6. Tüm Sonuçlar (Tüm anketlerin sonuçlarını grid olarak gösterir)
+def all_results(request):
+    question_list = Question.objects.all().order_by('-pub_date')
+    return render(request, 'polls/all_results.html', {'question_list': question_list})
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
