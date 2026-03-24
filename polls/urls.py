@@ -29,4 +29,7 @@ urlpatterns = [
     
     # Yorum ekleme: /polls/5/comment/
     path('<int:question_id>/comment/', views.add_comment, name='add_comment'),
+
+    # Anket serisini başlat
+    path('start/', views.start_survey, name='start_survey'),
 ]

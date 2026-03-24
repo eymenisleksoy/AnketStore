@@ -50,11 +50,25 @@ def detail(request, question_id):
     question.views += 1
     question.save()
     
+    # İstatiksel bilgiler
+    all_questions = list(Question.objects.order_by('id'))
+    total_questions = len(all_questions)
+    current_index = 0
+    for i, q in enumerate(all_questions):
+        if q.id == question.id:
+            current_index = i + 1
+            break
+            
+    progress = (current_index / total_questions) * 100 if total_questions > 0 else 0
+    
     comments = question.comments.all().order_by('-created_at')
     
     return render(request, 'polls/detail.html', {
         'question': question,
-        'comments': comments
+        'comments': comments,
+        'total_questions': total_questions,
+        'current_index': current_index,
+        'progress': progress
     })
 
 # 4. Yorum Ekleme
@@ -77,12 +91,27 @@ def add_comment(request, question_id):
 # 5. Sonuçlar (Oylama sonrası sonuçları gösterir)
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/results.html', {'question': question})
+    # Bir sonraki soruyu bul
+    next_question = Question.objects.filter(pk__gt=question.id).order_by('id').first()
+    
+    return render(request, 'polls/results.html', {
+        'question': question,
+        'next_question': next_question
+    })
 
 # 6. Tüm Sonuçlar (Tüm anketlerin sonuçlarını grid olarak gösterir)
 def all_results(request):
     question_list = Question.objects.all().order_by('-pub_date')
     return render(request, 'polls/all_results.html', {'question_list': question_list})
+
+# 7. Anket Serisini Başlat
+def start_survey(request):
+    # İlk anketin ID'sini al
+    first_question = Question.objects.order_by('id').first()
+    if first_question:
+        return HttpResponseRedirect(reverse('polls:detail', args=(first_question.id,)))
+    else:
+        return HttpResponseRedirect(reverse('polls:index'))
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -90,16 +119,35 @@ def vote(request, question_id):
         # Formdan gelen 'choice' verisini (ID'sini) alıyoruz
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
+        # İstatiksel bilgiler
+        all_questions = list(Question.objects.order_by('id'))
+        total_questions = len(all_questions)
+        current_index = 0
+        for i, q in enumerate(all_questions):
+            if q.id == question.id:
+                current_index = i + 1
+                break
+        progress = (current_index / total_questions) * 100 if total_questions > 0 else 0
+        
         # Eğer kullanıcı hiçbir şey seçmeden butona basarsa aynı sayfada hata gösteriyoruz
         return render(request, 'polls/detail.html', {
             'question': question,
-            'error_message': "Herhangi bir seçenek seçmediniz.",
+            'error_message': "Lütfen bir seçenek işaretleyiniz.",
+            'total_questions': total_questions,
+            'current_index': current_index,
+            'progress': progress
         })
     else:
         # Seçilen seçeneğin oy sayısını 1 artır ve veritabanına kaydet
         selected_choice.votes += 1
         selected_choice.save()
         
-        # Başarılı oylamadan sonra kullanıcıyı sonuçlar sayfasına yönlendir.
-        # HttpResponseRedirect kullanmak, sayfa yenilendiğinde oyun iki kere gitmesini engeller!
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+        # Bir sonraki soruyu bul
+        next_question = Question.objects.filter(pk__gt=question.id).order_by('id').first()
+        
+        if next_question:
+            # Sıradaki ankete git (Opsiyonel olarak bir başarı mesajı ile)
+            return HttpResponseRedirect(reverse('polls:detail', args=(next_question.id,)) + '?voted=1')
+        else:
+            # Son anketti, genel sonuçlara veya mevcut sonuçlara git
+            return HttpResponseRedirect(reverse('polls:results', args=(question.id,)) + '?final=1')
