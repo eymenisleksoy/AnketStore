@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Question, Choice, Comment
+from .models import Question, Choice, Comment, SiteFeedback
 
 class ChoiceInline(admin.TabularInline):
     model = Choice
@@ -27,3 +27,8 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('author_name', 'question', 'rating', 'created_at')
     list_filter = ['question', 'rating']
     search_fields = ['author_name', 'comment_text']
+
+@admin.register(SiteFeedback)
+class SiteFeedbackAdmin(admin.ModelAdmin):
+    list_display = ('id', 'rating', 'created_at', 'comment_text')
+    list_filter = ['rating', 'created_at']

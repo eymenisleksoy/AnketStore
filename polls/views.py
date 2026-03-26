@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Question, Choice, Comment
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from .models import Question, Choice, Comment, SiteFeedback
 
 from django.db.models import Sum
 
@@ -156,3 +158,27 @@ def vote(request, question_id):
 def all_comments(request):
     comments_list = Comment.objects.select_related('question').all().order_by('-created_at')
     return render(request, 'polls/all_comments.html', {'comments': comments_list})
+
+# 9. Hesap Oluşturma (Signup)
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('polls:index')
+    else:
+        form = UserCreationForm()
+    return render(request, 'polls/signup.html', {'form': form})
+
+# 10. Site Geri Bildirimi (Logout sonrası)
+def site_feedback(request):
+    if request.method == 'POST':
+        rating = request.POST.get('rating', 5)
+        text = request.POST.get('feedback_text', '')
+        SiteFeedback.objects.create(
+            rating=int(rating),
+            comment_text=text
+        )
+        return redirect('polls:index')
+    return render(request, 'polls/feedback.html')

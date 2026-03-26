@@ -1,0 +1,136 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Bizi Değerlendirin - AnketStore{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg p-5 border-0 rounded-5 rgb-card glass-morphism text-center">
+            <div class="mb-4">
+                <div class="icon-box mx-auto mb-3">
+                    <i class="bi bi-chat-heart display-4 text-white"></i>
+                </div>
+                <h2 class="mt-2 fw-black text-white">Bizi Değerlendirin</h2>
+                <p class="text-white-50">Oturumunuz başarıyla kapatıldı. Bize vakit ayırdığınız için teşekkürler! Deneyiminizi paylaşmak ister misiniz?</p>
+            </div>
+            
+            <form method="post" id="feedbackForm">
+                {% csrf_token %}
+                
+                <div class="mb-4">
+                    <div class="star-rating d-flex justify-content-center gap-2 mb-3">
+                        <i class="bi bi-star-fill star-icon fs-1" data-value="1"></i>
+                        <i class="bi bi-star-fill star-icon fs-1" data-value="2"></i>
+                        <i class="bi bi-star-fill star-icon fs-1" data-value="3"></i>
+                        <i class="bi bi-star-fill star-icon fs-1" data-value="4"></i>
+                        <i class="bi bi-star-fill star-icon fs-1" data-value="5"></i>
+                    </div>
+                    <input type="hidden" name="rating" id="ratingInput" value="5">
+                    <p class="text-primary fw-bold fs-5" id="ratingText">Mükemmel!</p>
+                </div>
+                
+                <div class="mb-4">
+                    <textarea name="feedback_text" class="form-control custom-input" rows="4" placeholder="Düşüncelerinizi buraya yazabilirsiniz... (Opsiyonel)"></textarea>
+                </div>
+                
+                <div class="d-grid gap-3">
+                    <button type="submit" class="btn btn-primary py-3 rounded-pill fw-black btn-glow">
+                        DEĞERLENDİRMEYİ GÖNDER
+                    </button>
+                    <a href="{% url 'polls:index' %}" class="btn btn-outline-light py-3 rounded-pill fw-bold border-opacity-25 transform-hover text-decoration-none">
+                        DEĞERLENDİRMEDEN GEÇ
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .glass-morphism {
+        background: rgba(30, 41, 59, 0.7) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+    .icon-box {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+    }
+    .custom-input {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+        padding: 1rem 1.2rem !important;
+        border-radius: 15px !important;
+        transition: all 0.3s ease;
+    }
+    .custom-input::placeholder {
+        color: rgba(255, 255, 255, 0.3) !important;
+    }
+    .star-icon {
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.1);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .star-icon.active {
+        color: #ffc107;
+        filter: drop-shadow(0 0 15px rgba(255, 193, 7, 0.6));
+    }
+    .star-icon:hover {
+        transform: scale(1.2) rotate(5deg);
+        color: #ffdb70;
+    }
+    .btn-glow {
+        letter-spacing: 1px;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('.star-icon');
+        const ratingInput = document.getElementById('ratingInput');
+        const ratingText = document.getElementById('ratingText');
+        const texts = ["Çok Kötü", "Kötü", "Orta", "İyi", "Mükemmel!"];
+
+        function setStars(val) {
+            stars.forEach(s => {
+                s.classList.toggle('active', parseInt(s.dataset.value) <= val);
+            });
+            ratingText.innerText = texts[val - 1];
+            ratingInput.value = val;
+        }
+
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                setStars(parseInt(this.dataset.value));
+            });
+            
+            star.addEventListener('mouseenter', function() {
+                const val = parseInt(this.dataset.value);
+                stars.forEach(s => {
+                    if(parseInt(s.dataset.value) <= val) {
+                        s.style.color = '#ffdb70';
+                    }
+                });
+            });
+
+            star.addEventListener('mouseleave', function() {
+                const currentVal = parseInt(ratingInput.value);
+                stars.forEach(s => {
+                    s.style.color = '';
+                });
+            });
+        });
+
+        // Initialize with 5 stars
+        setStars(5);
+    });
+</script>
+{% endblock %}

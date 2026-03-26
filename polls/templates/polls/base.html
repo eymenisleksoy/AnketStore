@@ -93,16 +93,16 @@
 <body>
     <style>
         @keyframes intense-rgb-glow {
-            0% { box-shadow: 0 0 15px #ff0000, 0 0 30px rgba(255, 0, 0, 0.4); border-color: #ff0000 !important; }
-            20% { box-shadow: 0 0 15px #ffff00, 0 0 30px rgba(255, 255, 0, 0.4); border-color: #ffff00 !important; }
-            40% { box-shadow: 0 0 15px #00ff00, 0 0 30px rgba(0, 255, 0, 0.4); border-color: #00ff00 !important; }
-            60% { box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.4); border-color: #00ffff !important; }
-            80% { box-shadow: 0 0 15px #0000ff, 0 0 30px rgba(0, 0, 255, 0.4); border-color: #0000ff !important; }
-            100% { box-shadow: 0 0 15px #ff00ff, 0 0 30px rgba(255, 0, 255, 0.4); border-color: #ff00ff !important; }
+            0% { box-shadow: 0 0 8px #ff0000, 0 0 15px rgba(255, 0, 0, 0.2); border-color: rgba(255, 0, 0, 0.6) !important; }
+            20% { box-shadow: 0 0 8px #ffff00, 0 0 15px rgba(255, 255, 0, 0.2); border-color: rgba(255, 255, 0, 0.6) !important; }
+            40% { box-shadow: 0 0 8px #00ff00, 0 0 15px rgba(0, 255, 0, 0.2); border-color: rgba(0, 255, 0, 0.6) !important; }
+            60% { box-shadow: 0 0 8px #00ffff, 0 0 15px rgba(0, 255, 255, 0.2); border-color: rgba(0, 255, 255, 0.6) !important; }
+            80% { box-shadow: 0 0 8px #0000ff, 0 0 15px rgba(0, 0, 255, 0.2); border-color: rgba(0, 0, 255, 0.6) !important; }
+            100% { box-shadow: 0 0 8px #ff00ff, 0 0 15px rgba(255, 0, 255, 0.2); border-color: rgba(255, 0, 255, 0.6) !important; }
         }
         .btn-rgb-strong {
-            border: 2px solid transparent !important;
-            animation: intense-rgb-glow 3s linear infinite;
+            border: 1px solid transparent !important;
+            animation: intense-rgb-glow 4s linear infinite;
             transition: all 0.3s ease;
             color: white !important;
             font-weight: 800;
@@ -113,13 +113,13 @@
         }
         .btn-rgb-strong:hover {
             transform: translateY(-3px) scale(1.05);
-            filter: brightness(1.5) contrast(1.2);
+            filter: brightness(1.2) contrast(1.1);
         }
         .rgb-card {
-            animation: intense-rgb-glow 3s linear infinite;
-            border-width: 4px !important;
+            animation: intense-rgb-glow 5s linear infinite;
+            border-width: 2px !important;
             border-style: solid !important;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
         }
     </style>
     <nav class="navbar navbar-expand-lg navbar-dark mb-4 shadow">
@@ -136,6 +136,18 @@
                     <a class="nav-link px-4 py-2 rounded-pill btn-rgb-strong" href="/admin/">
                         <i class="bi bi-shield-lock me-2"></i> Admin Paneli
                     </a>
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'polls:logout' %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link px-4 py-2 rounded-pill btn-rgb-strong border-0 w-100">
+                            <i class="bi bi-box-arrow-right me-2"></i> Oturumu Kapat
+                        </button>
+                    </form>
+                    {% else %}
+                    <a class="nav-link px-4 py-2 rounded-pill btn-rgb-strong" href="{% url 'polls:login' %}">
+                        <i class="bi bi-box-arrow-in-right me-2"></i> Giriş Yap
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

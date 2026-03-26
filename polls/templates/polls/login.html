@@ -1,0 +1,105 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Giriş Yap - AnketStore{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-lg p-5 border-0 rounded-5 rgb-card glass-morphism">
+            <div class="text-center mb-4">
+                <div class="icon-box mx-auto mb-3">
+                    <i class="bi bi-person-lock display-4 text-white"></i>
+                </div>
+                <h2 class="mt-2 fw-black text-white">HOŞ GELDİNİZ</h2>
+                <p class="text-white-50">AnketStore dünyasına giriş yapın</p>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="username" class="form-label text-white small text-uppercase fw-bold ls-wide mb-2">
+                        <i class="bi bi-person me-2"></i>Kullanıcı Adı
+                    </label>
+                    <input type="text" name="username" id="username" class="form-control custom-input" placeholder="Adınızı yazın..." required>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label text-white small text-uppercase fw-bold ls-wide mb-2">
+                        <i class="bi bi-shield-lock me-2"></i>Parola
+                    </label>
+                    <input type="password" name="password" id="password" class="form-control custom-input" placeholder="Şifrenizi yazın..." required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100 py-3 rounded-4 fw-black mb-4 btn-glow">
+                    GİRİŞ YAP
+                    <i class="bi bi-arrow-right-short ms-2"></i>
+                </button>
+                
+                <div class="text-center signup-section p-3 rounded-4 bg-white bg-opacity-5">
+                    <p class="text-white-50 small mb-2">Hesabınız yok mu?</p>
+                    <a href="{% url 'polls:signup' %}" class="text-gradient fw-bold text-decoration-none h5 d-block">
+                        HESAP OLUŞTUR <i class="bi bi-plus-circle ms-1"></i>
+                    </a>
+                </div>
+            </form>
+            
+            {% if form.errors %}
+            <div class="alert alert-danger border-0 rounded-4 mt-4 bg-danger bg-opacity-75 text-white animate-shake">
+                <i class="bi bi-exclamation-circle-fill me-2"></i> Kullanıcı adı veya parola hatalı!
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .glass-morphism {
+        background: rgba(30, 41, 59, 0.7) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+    .icon-box {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+    }
+    .custom-input {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+        padding: 1rem 1.2rem !important;
+        border-radius: 15px !important;
+        transition: all 0.3s ease;
+    }
+    .custom-input::placeholder {
+        color: rgba(255, 255, 255, 0.3) !important;
+    }
+    .custom-input:focus {
+        background: rgba(255, 255, 255, 0.12) !important;
+        border-color: var(--primary-color) !important;
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.2) !important;
+        outline: none;
+    }
+    .btn-glow {
+        letter-spacing: 1px;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    }
+    .btn-glow:hover {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+        transform: translateY(-2px);
+    }
+    .animate-shake {
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes shake {
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+</style>
+{% endblock %}

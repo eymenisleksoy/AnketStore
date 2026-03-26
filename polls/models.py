@@ -30,3 +30,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.author_name} - {self.question.question_text}"
+
+class SiteFeedback(models.Model):
+    author_name = models.CharField(max_length=100, default="Anonim")
+    comment_text = models.TextField(blank=True, null=True)
+    rating = models.IntegerField(default=5)  # 1-5 arası puan
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Feedback {self.id} - {self.rating} Yıldız"
