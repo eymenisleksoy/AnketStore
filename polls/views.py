@@ -151,3 +151,8 @@ def vote(request, question_id):
         else:
             # Son anketti, genel sonuçlara veya mevcut sonuçlara git
             return HttpResponseRedirect(reverse('polls:results', args=(question.id,)) + '?final=1')
+
+# 8. Tüm Yorumlar
+def all_comments(request):
+    comments_list = Comment.objects.select_related('question').all().order_by('-created_at')
+    return render(request, 'polls/all_comments.html', {'comments': comments_list})

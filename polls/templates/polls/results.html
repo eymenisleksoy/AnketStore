@@ -7,14 +7,20 @@
         <div class="col-lg-10">
             <!-- Header Section -->
             <div class="text-center mb-5 animate-fade-in">
+                {% if request.GET.final or request.GET.voted %}
                 <span class="badge bg-success bg-opacity-25 text-success rounded-pill px-4 py-2 border border-success border-opacity-25 mb-3">
                     <i class="bi bi-check-circle-fill me-2"></i> OYUNUZ BAŞARIYLA KAYDEDİLDİ
                 </span>
+                {% else %}
+                <span class="badge bg-info bg-opacity-25 text-info rounded-pill px-4 py-2 border border-info border-opacity-25 mb-3">
+                    <i class="bi bi-bar-chart-fill me-2"></i> GÜNCEL ANKET İSTATİSTİKLERİ
+                </span>
+                {% endif %}
                 <h1 class="display-5 text-white fw-black mb-2">{{ question.question_text }}</h1>
                 <p class="text-white-50 fs-5">Topluluğun bu konudaki fikirlerini aşağıda görebilirsiniz.</p>
             </div>
 
-            <div class="card shadow-2xl border-0 overflow-hidden rgb-card" style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 32px;">
+            <div class="card shadow-2xl border-0 overflow-hidden" style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 32px;">
                 <div class="card-body p-5">
                     <div class="row g-4 mb-5">
                     {% for choice in question.choice_set.all %}
@@ -54,10 +60,17 @@
                     
                     <div class="d-flex flex-wrap justify-content-center gap-4 pt-4 border-top border-white border-opacity-10">
                         {% if next_question %}
+                            {% if request.GET.mode == 'view' %}
+                            <a href="{% url 'polls:results' next_question.id %}?mode=view" class="btn btn-outline-info btn-lg px-5 py-3 rounded-pill fw-bold transform-hover transition-all d-flex align-items-center">
+                                <span>SIRADAKİ SONUÇ</span>
+                                <i class="bi bi-arrow-right-circle ms-3 fs-5"></i>
+                            </a>
+                            {% else %}
                             <a href="{% url 'polls:detail' next_question.id %}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg transform-hover transition-all d-flex align-items-center">
                                 <span>SIRADAKİ ANKETE GEÇ</span>
                                 <i class="bi bi-arrow-right-circle ms-3 fs-5"></i>
                             </a>
+                            {% endif %}
                         {% else %}
                             <div class="text-center w-100 mb-4">
                                 <div class="bg-primary bg-opacity-10 rounded-pill p-4 d-inline-block mb-3 border border-primary border-opacity-25">
@@ -66,14 +79,17 @@
                                 <h3 class="text-white fw-bold">Tüm Anketleri Bitirdiniz!</h3>
                                 <p class="text-white-50">Fikirlerinizi paylaştığınız için teşekkürler.</p>
                             </div>
-                            <a href="{% url 'polls:all_results' %}" class="btn btn-outline-info btn-lg px-5 py-3 rounded-pill fw-bold transform-hover transition-all d-flex align-items-center">
-                                <i class="bi bi-grid-3x3-gap-fill me-3 fs-5"></i> Tüm Sonuçları Keşfet
-                            </a>
                         {% endif %}
                         
+                        {% if request.GET.mode == 'view' %}
+                        <a href="{% url 'polls:all_results' %}" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold border-opacity-50 transform-hover transition-all text-white bg-white bg-opacity-10">
+                            <i class="bi bi-grid-3x3-gap-fill me-3 fs-5"></i> Tüm Sonuçlara Dön
+                        </a>
+                        {% else %}
                         <a href="{% url 'polls:index' %}" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold border-opacity-50 transform-hover transition-all text-white bg-white bg-opacity-10">
                             <i class="bi bi-house-door-fill me-3 fs-5"></i> Ana Sayfaya Dön
                         </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

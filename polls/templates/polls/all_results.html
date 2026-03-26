@@ -16,14 +16,16 @@
 <div class="row g-4">
     {% for question in question_list %}
     <div class="col-lg-4 col-md-6">
-        <div class="card h-100 rgb-card border-0" style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(20px); border-radius: 20px;">
+        <div class="card h-100 border-0" style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(20px); border-radius: 20px;">
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <span class="badge bg-primary bg-opacity-25 text-primary rounded-pill px-3 py-1 border border-primary border-opacity-25 small">#{{ forloop.counter }}</span>
                     <span class="text-white-50 small"><i class="bi bi-person-check me-1"></i> {{ question.total_votes }} Oy</span>
                 </div>
                 
-                <h3 class="h5 text-white fw-bold mb-4 flex-grow-1">{{ question.question_text }}</h3>
+                <a href="{% url 'polls:results' question.id %}?mode=view" class="text-decoration-none">
+                    <h3 class="h5 text-white fw-bold mb-4 flex-grow-1 transform-hover hover-text-primary">{{ question.question_text }}</h3>
+                </a>
                 
                 <div class="results-container gap-3 d-flex flex-column">
                     {% for choice in question.choice_set.all|dictsortreversed:"votes" %}
@@ -47,7 +49,9 @@
                 </div>
                 
                 <div class="mt-4 pt-3 border-top border-white border-opacity-10 d-grid">
-                    <a href="{% url 'polls:detail' question.id %}" class="btn btn-sm btn-outline-light rounded-pill opacity-100 transform-hover">Detayları Gör</a>
+                    <a href="{% url 'polls:results' question.id %}?mode=view" class="btn btn-sm btn-outline-info rounded-pill opacity-100 transform-hover">
+                        <i class="bi bi-graph-up-arrow me-2"></i>Verileri İncele
+                    </a>
                 </div>
             </div>
         </div>
@@ -74,6 +78,10 @@
     .results-container::-webkit-scrollbar-thumb {
         background: rgba(255,255,255,0.1);
         border-radius: 10px;
+    }
+    .hover-text-primary:hover {
+        color: var(--bs-primary) !important;
+        transition: color 0.3s ease;
     }
 </style>
 {% endblock %}

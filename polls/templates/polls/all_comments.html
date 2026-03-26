@@ -1,0 +1,73 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Tüm Kullanıcı Yorumları - AnketStore{% endblock %}
+
+{% block content %}
+<div class="row align-items-center mb-5">
+    <div class="col-md-8">
+        <h1 class="display-4 fw-black text-white mb-2">Tüm <span class="text-gradient">Yorumlar</span></h1>
+        <p class="text-light opacity-75 fs-5">Platformdaki tüm anketlere gelen kullanıcı düşüncelerini aşağıda keşfedebilirsiniz.</p>
+    </div>
+    <div class="col-md-4 text-md-end">
+        <a href="{% url 'polls:index' %}" class="btn btn-outline-light rounded-pill px-4">
+            <i class="bi bi-house me-2"></i>Ana Sayfa
+        </a>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    {% for comment in comments %}
+    <div class="col-lg-4 col-md-6">
+        <div class="card h-100 border-0" style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(20px); border-radius: 20px;">
+            <div class="card-body p-4 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="bg-primary bg-opacity-20 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-white fw-bold mb-0" style="font-size: 0.9rem;">{{ comment.author_name }}</h6>
+                            <small class="text-white-50" style="font-size: 0.7rem;">{{ comment.created_at|date:"d M Y, H:i" }}</small>
+                        </div>
+                    </div>
+                    <div class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 rounded-pill px-2 py-1 small">
+                        <i class="bi bi-star-fill me-1"></i>{{ comment.rating }}/5
+                    </div>
+                </div>
+                
+                <div class="flex-grow-1">
+                    <p class="text-light small mb-3 opacity-90" style="line-height: 1.5; font-style: italic;">
+                        "{{ comment.comment_text }}"
+                    </p>
+                </div>
+                
+                <div class="mt-3 pt-3 border-top border-white border-opacity-10">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-chat-left-quote text-primary small"></i>
+                        <a href="{% url 'polls:results' comment.question.id %}?mode=view" class="text-decoration-none text-info hover-text-primary small fw-bold text-truncate" style="max-width: 100%;">
+                            {{ comment.question.question_text }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <div class="bg-dark bg-opacity-50 p-5 rounded-5 border border-white border-opacity-10 d-inline-block">
+            <i class="bi bi-chat-square-dots display-3 text-muted mb-3 d-block"></i>
+            <h5 class="text-white">Henüz hiç yorum yapılmamış.</h5>
+            <p class="text-white-50">İlk yorumu siz yapmak ister misiniz?</p>
+            <a href="{% url 'polls:list' %}" class="btn btn-primary rounded-pill px-4 mt-3">Anketlere Git</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .hover-text-primary:hover {
+        color: var(--bs-primary) !important;
+        transition: color 0.3s ease;
+    }
+</style>
+{% endblock %}

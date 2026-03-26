@@ -32,4 +32,7 @@ urlpatterns = [
 
     # Anket serisini başlat
     path('start/', views.start_survey, name='start_survey'),
+
+    # Tüm yorumlar
+    path('comments/', views.all_comments, name='all_comments'),
 ]
